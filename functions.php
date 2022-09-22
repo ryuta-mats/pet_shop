@@ -53,3 +53,29 @@ function find_all()
     // 結果の取得
     return $stmt->fetchAll(PDO::FETCH_ASSOC);    
 }
+
+function find_description_by_keyword($keyword)
+{
+    $dbh = connect_db();
+
+    $sql = <<<EOM
+SELECT
+    *
+FROM
+    animals
+WHERE
+    description LIKE :keyword;
+EOM;
+
+    // プリペアドステートメントの準備
+    $stmt = $dbh->prepare($sql);
+
+    // パラメータのバインド
+    $stmt->bindValue(':keyword', $keyword, PDO::PARAM_STR);
+
+    // プリペアドステートメントの実行
+    $stmt->execute();
+
+    // 結果の取得
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);    
+}
